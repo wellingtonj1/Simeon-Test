@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -59,7 +60,8 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
-        return view('posts.show', compact('post'));
+        $comments = $post->comments()->with('user')->get();
+        return view('posts.show', compact('post', 'comments'));
     }
 
     /**
@@ -106,7 +108,13 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $post->delete();
-
         return redirect()->route('posts.index');
+    }
+
+    public function myPosts()
+    {
+        $user = Auth::user();
+        $posts = $user->posts;
+        return view('posts.my-posts', compact('posts'));
     }
 }

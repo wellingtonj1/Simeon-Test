@@ -4,7 +4,7 @@
             {{ __('Posts') }}
         </h2>
 
-        <a href="{{ route('posts.create') }}" class="btn btn-primary float-right">Create Post</a>
+        <a href="{{ route('posts.create') }}" class="btn btn-primary">Create Post</a>
     </x-slot>
 
     <div class="container">
@@ -21,6 +21,7 @@
                                         <h5 class="card-title">{{ $post->title }}</h5>
                                         <p class="card-text">{{ $post->description }}</p>
                                         <p class="card-text"><small class="text-muted"> Posted by {{ $post->user->name }} on {{ $post->created_at->diffForHumans() }}</small></p>
+                                        <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary">View Full Post</a>
                                     </div>
                                     <div class="card-footer">
                                         <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Edit</a>

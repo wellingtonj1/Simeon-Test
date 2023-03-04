@@ -4,7 +4,7 @@
             {{ __('Create Post') }}
         </h2>
 
-        <a href="{{ route('posts.index') }}" class="btn btn-primary float-right">Back to Posts</a>
+        <a href="{{ route('posts.index') }}" class="btn btn-primary">Back to Posts</a>
     </x-slot>
 
     <div class="container">

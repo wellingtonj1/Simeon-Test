@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,10 +19,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route group middleware auth
+Route::middleware(['auth'])->group(function () {
 
-Route::resource('posts', PostController::class);
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // Posts
+    Route::resource('posts', PostController::class);
+    Route::get('/my-posts', [PostController::class, 'myPosts'])->name('posts.my-posts');
+
+    // Comments
+    Route::get('/posts/{post}/comments', [CommentController::class, 'show'])->name('posts.comments.show');
+    Route::post('/posts/{post}/comments', [CommentController::class, 'storeComment'])->name('posts.comments.store');
+
+});
 
 require __DIR__.'/auth.php';
+

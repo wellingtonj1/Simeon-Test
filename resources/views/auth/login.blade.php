@@ -41,8 +41,16 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
+                @if (Route::has('register'))
+                    <div class="text-sm">
+                        <a class="ml-1 font-medium text-indigo-600 hover:text-indigo-500" href="{{ route('register') }}">
+                            <span>Don't have an account?</span>
+                        </a>
+                    </div>
+                @endif
+
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                    <a class="ml-3 text-sm text-gray-500 hover:text-gray-900" href="{{ route('password.request') }}">
                         {{ __('Forgot your password?') }}
                     </a>
                 @endif
@@ -51,6 +59,7 @@
                     {{ __('Log in') }}
                 </x-button>
             </div>
+
         </form>
     </x-auth-card>
 </x-guest-layout>
