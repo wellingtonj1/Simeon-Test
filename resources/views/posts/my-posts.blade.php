@@ -4,19 +4,13 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('My Posts') }}
         </h2>
+        <a href="{{ route('posts.create') }}" class="btn btn-primary btn-sm">Create New Post</a>
     </x-slot>
 
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header bg-white">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">My Posts</h5>
-                            <a href="{{ route('posts.create') }}" class="btn btn-primary btn-sm">Create New Post</a>
-                        </div>
-                    </div>
-
+                <div class="card mt-4">
                     <div class="card-body">
                         @if (count($posts) > 0)
                             @foreach ($posts as $post)

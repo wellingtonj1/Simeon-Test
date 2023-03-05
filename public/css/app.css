@@ -1,4 +1,9 @@
-
+header.bg-white div.between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+}
 /*
 ! tailwindcss v3.2.7 | MIT License | https://tailwindcss.com
 *//*
@@ -1258,6 +1263,10 @@ select {
 .hover\:text-gray-900:hover {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+.hover\:text-indigo-500:hover {
+  --tw-text-opacity: 1;
+  color: rgb(99 102 241 / var(--tw-text-opacity));
 }
 .focus\:z-10:focus {
   z-index: 10;

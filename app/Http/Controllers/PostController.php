@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+
+    private $defaultPerPage = 15;
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('user')->orderByDesc('created_at')->get();
+        $posts = Post::with('user')->orderByDesc('created_at')->paginate($this->defaultPerPage);
         return view('posts.index', compact('posts'));
     }
 
@@ -54,12 +57,11 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        $post = Post::findOrFail($id);
         $comments = $post->comments()->with('user')->get();
         return view('posts.show', compact('post', 'comments'));
     }
@@ -67,12 +69,11 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        $post = Post::findOrFail($id);
         return view('posts.edit', compact('post'));
     }
 
@@ -80,17 +81,16 @@ class PostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'description' => 'required',
         ]);
 
-        $post = Post::findOrFail($id);
         $post->title = $validatedData['title'];
         $post->description = $validatedData['description'];
         $post->save();
@@ -101,12 +101,11 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        $post = Post::findOrFail($id);
         $post->delete();
         return redirect()->route('posts.index');
     }
@@ -114,7 +113,7 @@ class PostController extends Controller
     public function myPosts()
     {
         $user = Auth::user();
-        $posts = $user->posts;
+        $posts = $user->posts()->with('user')->orderByDesc('created_at')->paginate($this->defaultPerPage);
         return view('posts.my-posts', compact('posts'));
     }
 }

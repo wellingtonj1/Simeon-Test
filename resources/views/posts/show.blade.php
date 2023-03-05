@@ -9,7 +9,7 @@
 
     <div class="container">
 
-            <div class="card mb-3">
+            <div class="card mt-4 mb-3">
             <div class="card-body">
                 <h2 class="card-title">{{ $post->title }}</h2>
                 <p class="card-text">{{ $post->description }}</p>
@@ -46,7 +46,7 @@
                 <textarea class="form-control" name="comment" placeholder="Write your comment..." rows="3"></textarea>
             </div>
             <input type="hidden" name="post_id" value="{{ $post->id }}">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
         </form>
     </div>
 </x-app-layout>
