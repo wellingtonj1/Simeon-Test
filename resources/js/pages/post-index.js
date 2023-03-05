@@ -18,29 +18,37 @@ $(function() {
 
     });
 
-    // Send comment when form is submitted
-    $('form.comment-form').on('submit', function(e) {
-        e.preventDefault();
-        var comment = $(this).closest('.comment-form').find('textarea').val();
-        var postId = $(this).closest('.comment-form').find('input[name="post_id"]').val();
+    // handle click on btn remove
+    $('.btn-remove').on('click', function() {
+        var id = $(this).data('post-id');
+        var url = $(this).data('url');
+        $('#deleteForm').attr('action', url);
+        $('#deleteModal').modal('show');
+        console.log('HERE');
+    });
 
+    // Handle click event of delete button
+    $('#deleteBtn').on('click', function(event) {
+        // Prevent default behavior of delete button
+        event.preventDefault();
+
+        // Get the form and submit the delete request using AJAX
+        var form = $('#deleteForm');
+        var url = form.attr('action');
+        var data = form.serialize();
         $.ajax({
+            url: url,
             type: 'POST',
-            url: '/posts/' + postId + '/comments',
-            data: {
-                comment: comment,
-                _token: $(this).closest('.comment-form').find('input[name="_token"]').val()
-            },
-            success: function(data) {
-                // Append new comment to list of comments
-                $(this).closest('.card-body').find('.comments').append(data);
-
-                // Clear comment form
-                $(this).closest('.comment-form').find('textarea').val('');
-
-                // Hide comment form
-                $(this).closest('.comment-form').hide();
+            data: data,
+            success: function(result) {
+                location.reload();
             }
         });
     });
+
+    // Handle click event of close modal
+    $('button[data-dismiss="modal"]').on('click', function() {
+        $(this).closest('div.modal').modal('hide');
+    });
+
 });

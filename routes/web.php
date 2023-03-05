@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return view('dashboard', ['posts' => auth()->user()->posts()->with('user')->orderByDesc('created_at')->paginate(3)]);
     })->name('dashboard');
 
     // Posts

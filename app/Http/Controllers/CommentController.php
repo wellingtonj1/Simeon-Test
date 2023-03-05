@@ -20,7 +20,7 @@ class CommentController extends Controller
         $comment->comment = $request->input('comment');
         $comment->save();
 
-        return redirect()->back()->with('success', 'Comment added successfully.');
+        return redirect()->route('posts.show', $post->id)->with('success', 'Comment added successfully');
     }
 
 }

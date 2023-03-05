@@ -8,3 +8,11 @@ header.bg-white {
     }
 
 }
+
+.container {
+    .card {
+        .card-footer.spaced > * {
+            margin-left: 0.25rem;
+        }
+    }
+}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,8 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('user')->orderByDesc('created_at')->paginate($this->defaultPerPage);
-        return view('posts.index', compact('posts'));
+        $header = ['title' => 'Posts'];
+        return view('posts.index', compact('posts', 'header'));
     }
 
     /**
@@ -29,7 +31,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $header = ['title' => 'Create Post', 'action' => 'posts.store'];
+        $post = new Post;
+        return view('posts.create-edit', compact('header', 'post'));
     }
 
     /**
@@ -38,13 +42,8 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $validatedData)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required',
-        ]);
-
         $post = new Post;
         $post->title = $validatedData['title'];
         $post->description = $validatedData['description'];
@@ -74,7 +73,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', compact('post'));
+        $header = ['title' => 'Edit Post'];
+        return view('posts.create-edit', compact('post', 'header'));
     }
 
     /**
@@ -84,13 +84,8 @@ class PostController extends Controller
      * @param  Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $validatedData, Post $post)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required',
-        ]);
-
         $post->title = $validatedData['title'];
         $post->description = $validatedData['description'];
         $post->save();
@@ -114,6 +109,7 @@ class PostController extends Controller
     {
         $user = Auth::user();
         $posts = $user->posts()->with('user')->orderByDesc('created_at')->paginate($this->defaultPerPage);
-        return view('posts.my-posts', compact('posts'));
+        $header = ['title' => 'My Posts'];
+        return view('posts.index', compact('posts', 'header'));
     }
 }

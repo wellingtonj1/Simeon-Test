@@ -1,28 +1,19 @@
-<x-app-layout>
-
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Delete Post') }}
-        </h2>
-
-        <a href="{{ route('posts.create') }}" class="btn btn-primary float-right">Create Post</a>
-    </x-slot>
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <p>Are you sure you want to delete this post?</p>
-                        <form method="POST" action="{{ route('posts.destroy', $post->id) }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                            <a href="{{ route('posts.index') }}" class="btn btn-secondary">Cancel</a>
-                        </form>
-                    </div>
-                </div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this post?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="deleteBtn">Delete</button>
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>

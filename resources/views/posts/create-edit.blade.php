@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Post') }}
+            {{ $header['title'] }}
         </h2>
 
         <a href="{{ route('posts.index') }}" class="btn btn-primary">Back to Posts</a>
@@ -9,15 +9,16 @@
 
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="card mt-4">
                     <div class="card-body">
-                        <form method="POST" action="{{ route('posts.store') }}">
+                        <form method="POST" action="{{ isEdit() ? route('posts.update', $post) : route('posts.store') }}">
                             @csrf
+                            {{ isEdit() ? method_field('PUT') : '' }}
 
                             <div class="form-group">
                                 <label for="title">{{ __('Title') }}</label>
-                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" required autofocus>
+                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title', $post->title) }}" required autofocus>
 
                                 @error('title')
                                 <span class="invalid-feedback" role="alert">
@@ -28,7 +29,7 @@
 
                             <div class="form-group">
                                 <label for="description">{{ __('Description') }}</label>
-                                <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" rows="5" required>{{ old('description') }}</textarea>
+                                <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description" rows="5" required>{{ old('description', $post->description) }}</textarea>
 
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">
