@@ -120,4 +120,16 @@ class PostController extends Controller
         $header = ['title' => 'My Posts'];
         return view('posts.index', compact('posts', 'header'));
     }
+
+    public function myComments()
+    {
+        $user_id = Auth::user()->id;
+        $posts = Post::where(function ($query) use ($user_id) {
+            $query->whereRaw("(select user_id from comments where post_id = posts.id order by created_at desc limit 1) = ?", [$user_id]);
+        })->with('user')->orderByDesc('created_at')->paginate($this->defaultPerPage);
+
+        $header = ['title' => 'Posts'];
+        return view('posts.index', compact('posts', 'header'));
+    }
+
 }

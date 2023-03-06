@@ -26,6 +26,9 @@
                                         <div class="text-center">
                                             You've commented on posts {{ Auth::user()->comments->count() }} times.
                                         </div>
+                                        <div class="text-center">
+                                            <a href="{{ route('posts.myComments') }}" class="btn btn-primary">View Posts with Last Comment by You</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
