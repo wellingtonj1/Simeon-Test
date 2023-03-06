@@ -74,6 +74,9 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $header = ['title' => 'Edit Post'];
+        if ($post->user_id != auth()->user()->id) {
+            return redirect()->route('posts.index');
+        }
         return view('posts.create-edit', compact('post', 'header'));
     }
 
@@ -89,7 +92,9 @@ class PostController extends Controller
         $post->title = $validatedData['title'];
         $post->description = $validatedData['description'];
         $post->save();
-
+        if ($post->user_id != auth()->user()->id) {
+            return redirect()->route('posts.index');
+        }
         return redirect()->route('posts.index');
     }
 
@@ -102,6 +107,9 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+        if ($post->user_id != auth()->user()->id) {
+            return redirect()->route('posts.index');
+        }
         return redirect()->route('posts.index');
     }
 

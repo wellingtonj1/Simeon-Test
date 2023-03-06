@@ -21,7 +21,7 @@
                                     <div class="card-body posts">
                                         <h4 class="card-title text-center">{{ $post->title }}</h4>
                                         <p class="card-text">{{ $post->description }}</p>
-                                        <p class="card-text"><small class="text-muted"> Posted by {{ $post->user->name }} on {{ $post->created_at->diffForHumans() }}</small></p>
+                                        <p class="card-text"><small class="text-muted"> Posted by {{ $post->user->email }} on {{ $post->created_at->diffForHumans() }}</small></p>
 
                                         <div class="comment-content" data-post-id="{{ $post->id }}">
                                             <h5 class="mt-3 mb-3">Comments</h5>
@@ -47,14 +47,16 @@
                                     </div>
                                     <div class="card-footer d-flex justify-content-end spaced">
                                         <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary">View Full Post</a>
-                                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning">Edit</a>
-                                        <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline-block" id="deleteForm">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-danger btn-remove" data-toggle="modal" data-target="#deleteModal">
-                                                Delete
-                                            </button>
-                                        </form>
+                                        @if (Auth::user()->id == $post->user_id)
+                                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning">Edit</a>
+                                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline-block" id="deleteForm">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger btn-remove" data-toggle="modal" data-target="#deleteModal">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        @endif
                                         <button type="button" class="btn btn-secondary show-comments" data-post-id="{{ $post->id }}">Show Comments</button>
                                     </div>
                                 </div>
